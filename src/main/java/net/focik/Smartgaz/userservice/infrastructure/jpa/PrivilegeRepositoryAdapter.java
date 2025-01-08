@@ -17,10 +17,7 @@ public class PrivilegeRepositoryAdapter implements IPrivilegeRepository {
     public Privilege getPrivilegeById(Long id) {
         Optional<Privilege> byId = privilegeDtoRepository.findById(id);
 
-        if (byId.isEmpty())
-            return null;
-
-        return byId.get();
+        return byId.orElse(null);
     }
 
     @Override

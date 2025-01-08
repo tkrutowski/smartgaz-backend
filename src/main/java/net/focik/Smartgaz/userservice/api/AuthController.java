@@ -9,8 +9,6 @@ import net.focik.Smartgaz.userservice.application.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 //@CrossOrigin
 @Slf4j
 @RequiredArgsConstructor

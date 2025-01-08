@@ -2,7 +2,6 @@ package net.focik.Smartgaz.userservice.domain.port.secondary;
 
 
 import net.focik.Smartgaz.userservice.domain.AppUser;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

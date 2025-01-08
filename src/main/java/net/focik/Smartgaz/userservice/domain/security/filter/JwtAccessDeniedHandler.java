@@ -1,7 +1,6 @@
 package net.focik.Smartgaz.userservice.domain.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.focik.Smartgaz.utils.exceptions.HttpResponse;
@@ -20,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtAccessDeniedHandler  implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException {
         HttpResponse httpResponse = new HttpResponse(FORBIDDEN.value(), FORBIDDEN, FORBIDDEN.getReasonPhrase().toUpperCase(), FORBIDDEN_MESSAGE);
 
         response.setContentType(APPLICATION_JSON_VALUE);

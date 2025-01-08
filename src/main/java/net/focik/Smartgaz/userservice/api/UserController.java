@@ -1,7 +1,6 @@
 package net.focik.Smartgaz.userservice.api;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import net.focik.Smartgaz.userservice.api.dto.UserDto;
 import net.focik.Smartgaz.userservice.domain.AppUser;
