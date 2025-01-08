@@ -1,7 +1,6 @@
 package net.focik.Smartgaz.dobranocka.customer.domain.customer;
 
 import io.micrometer.common.util.StringUtils;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.secondary.CustomerRepository;

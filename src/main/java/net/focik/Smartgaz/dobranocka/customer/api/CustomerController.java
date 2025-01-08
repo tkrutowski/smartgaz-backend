@@ -16,11 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Log4j2
 @RestController
@@ -108,7 +104,7 @@ public class CustomerController extends ExceptionHandling {
     }
 
     @DeleteMapping("/{idCustomer}")
-    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_CUSTOMER_DELETE_ALL')")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_CUSTOMER_DELETE_ALL','DOBRANOCKA_CUSTOMER_DELETE') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpResponse> deleteCustomer(@PathVariable int idCustomer) {
         log.info("Request to delete Customer with id: {}", idCustomer);
 

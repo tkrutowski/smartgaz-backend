@@ -20,4 +20,8 @@ public class Customer {
     private String mail;
     private String regon;
     private String info;
+
+    public String getAddress() {
+        return String.format("%s, %s %s",getStreet(), getZip(), getCity());
+    }
 }

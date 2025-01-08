@@ -5,7 +5,6 @@ import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.AddCu
 import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.DeleteCustomerUseCase;
 import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.GetCustomerUseCase;
 import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.UpdateCustomerUseCase;
-import net.focik.Smartgaz.utils.exceptions.ObjectCanNotBeDeletedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
