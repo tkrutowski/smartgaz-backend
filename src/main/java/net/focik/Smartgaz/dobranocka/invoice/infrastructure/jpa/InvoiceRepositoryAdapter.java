@@ -9,7 +9,6 @@ import net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto.InvoiceItemDbDto
 import net.focik.Smartgaz.dobranocka.invoice.infrastructure.mapper.JpaInvoiceMapper;
 import org.springframework.stereotype.Component;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,11 +66,6 @@ public class InvoiceRepositoryAdapter implements InvoiceRepository {
         return invoiceItemDtoRepository.findAllByIdInvoice(idInvoice).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void removeInvoiceItem(Long id) {
-        invoiceItemDtoRepository.deleteById(id);
     }
 
     @Override

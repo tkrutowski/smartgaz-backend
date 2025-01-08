@@ -7,7 +7,6 @@ import net.focik.Smartgaz.dobranocka.invoice.api.dto.PaymentMethodDto;
 import net.focik.Smartgaz.dobranocka.invoice.api.dto.VatDto;
 import net.focik.Smartgaz.dobranocka.invoice.api.mapper.ApiInvoiceMapper;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;
-import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.InvoicePdf;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.primary.*;
 import net.focik.Smartgaz.utils.exceptions.ExceptionHandling;
 import net.focik.Smartgaz.utils.exceptions.HttpResponse;

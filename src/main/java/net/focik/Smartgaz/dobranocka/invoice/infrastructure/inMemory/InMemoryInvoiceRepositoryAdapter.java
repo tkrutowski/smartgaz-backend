@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,8 +26,6 @@ public class InMemoryInvoiceRepositoryAdapter implements InvoiceRepository {
     public Invoice save(Invoice invoice) {
         InvoiceDbDto invoiceDbDto = mapper.toDto(invoice);
         log.info("Try add into inMemoryDb invoice: " + invoiceDbDto.toString());
-        if (invoiceDbDto == null)
-            throw new NullPointerException("Advance cannot be null");
         Integer idInvoice = DataBaseInvoice.getInvoiceDbDtoHashMap()
                 .keySet()
                 .stream()
@@ -38,7 +37,7 @@ public class InMemoryInvoiceRepositoryAdapter implements InvoiceRepository {
         }
         DataBaseInvoice.getInvoiceDbDtoHashMap().put(idInvoice, invoiceDbDto);
 
-        Long idInvoiceItem = DataBaseInvoiceItem.getInvoiceItemDbDtoHashMap()
+        long idInvoiceItem = DataBaseInvoiceItem.getInvoiceItemDbDtoHashMap()
                 .keySet()
                 .stream()
                 .reduce(Long::max)
@@ -73,22 +72,19 @@ public class InMemoryInvoiceRepositoryAdapter implements InvoiceRepository {
         return DataBaseInvoice.getInvoiceDbDtoHashMap()
                 .values()
                 .stream()
-                .map(customerDbDto -> mapper.toDomain(customerDbDto))
+                .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<Invoice> findById(Integer id) {
         Optional<Invoice> invoiceOptional = Optional.ofNullable(DataBaseInvoice.getInvoiceDbDtoHashMap().get(id))
-                .map(dbDto -> mapper.toDomain(dbDto));
+                .map(mapper::toDomain);
 
-        if (invoiceOptional.isPresent()){
-
-                invoiceOptional.get().setInvoiceItems(DataBaseInvoiceItem.getInvoiceItemDbDtoHashMap().values()
-                        .stream().filter(invoiceItemDbDto -> invoiceItemDbDto.getIdInvoice() == id)
-                        .map(invoiceItemDbDto -> mapper.toDomain(invoiceItemDbDto))
-                        .collect(Collectors.toList()));
-        }
+        invoiceOptional.ifPresent(invoice -> invoice.setInvoiceItems(DataBaseInvoiceItem.getInvoiceItemDbDtoHashMap().values()
+                .stream().filter(invoiceItemDbDto -> Objects.equals(invoiceItemDbDto.getIdInvoice(), id))
+                .map(mapper::toDomain)
+                .collect(Collectors.toList())));
         return invoiceOptional;
     }
 
@@ -107,15 +103,11 @@ public class InMemoryInvoiceRepositoryAdapter implements InvoiceRepository {
         return DataBaseInvoiceItem.getInvoiceItemDbDtoHashMap()
                 .values()
                 .stream()
-                .filter(dto -> dto.getIdInvoice() == idInvoice)
+                .filter(dto -> Objects.equals(dto.getIdInvoice(), idInvoice))
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void removeInvoiceItem(Long id) {
-
-    }
 
     @Override
     public void deleteAllInvoiceItemsByInvoiceId(Integer id) {

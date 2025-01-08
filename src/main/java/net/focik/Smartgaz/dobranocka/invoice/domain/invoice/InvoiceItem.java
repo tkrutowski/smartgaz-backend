@@ -1,12 +1,8 @@
 package net.focik.Smartgaz.dobranocka.invoice.domain.invoice;
 
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
 import lombok.*;
 import net.focik.Smartgaz.utils.share.Vat;
 import org.javamoney.moneta.Money;
-
-import static net.focik.Smartgaz.utils.prints.FontUtil.FONT_10;
 
 @Builder
 @AllArgsConstructor

@@ -1,9 +1,7 @@
 package net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto;
 
 import lombok.*;
-import net.focik.Smartgaz.utils.share.PaymentMethod;
 import net.focik.Smartgaz.utils.share.Vat;
-import org.javamoney.moneta.Money;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

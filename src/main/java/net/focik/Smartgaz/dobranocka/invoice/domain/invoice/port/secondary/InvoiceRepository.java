@@ -13,19 +13,14 @@ public interface InvoiceRepository {
     Invoice save(Invoice invoice);
 
     void deleteInvoice(Integer id);
-//
+
     List<Invoice> findAll();
-//
+
     Optional<Invoice> findById(Integer id);
-//
-//    Optional<Invoice> findByNip(String nip);
-//
+
     Optional<Invoice> findByNumber(String number);
-//
-//    List<Invoice> findAllByActive(boolean isActive);
 
     List<InvoiceItem> findByInvoiceId(Integer idInvoice);
 
-    void removeInvoiceItem(Long id);
     void deleteAllInvoiceItemsByInvoiceId(Integer id);
 }
