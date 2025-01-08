@@ -1,5 +1,8 @@
 package net.focik.Smartgaz.utils.share;
 
+import lombok.Getter;
+
+@Getter
 public enum PaymentStatus {
     PAID("Spłacony"),
     TO_PAY("Do zapłaty"),
@@ -12,7 +15,4 @@ public enum PaymentStatus {
         this.viewValue = viewValue;
     }
 
-    public String getViewValue() {
-        return viewValue;
-    }
 }

@@ -95,58 +95,58 @@ public class MoneyUtils {
         }
 
 
-        if (kwotaPo.substring(1, 3).equals("10"))
+        if (kwotaPo.startsWith("10", 1))
             slownie += " dziesięć";
-        else if (kwotaPo.substring(1, 3).equals("11"))
+        else if (kwotaPo.startsWith("11", 1))
             slownie += " jedenaście";
-        else if (kwotaPo.substring(1, 3).equals("12"))
+        else if (kwotaPo.startsWith("12", 1))
             slownie += " dwanaście";
-        else if (kwotaPo.substring(1, 3).equals("13"))
+        else if (kwotaPo.startsWith("13", 1))
             slownie += " trzynaście";
-        else if (kwotaPo.substring(1, 3).equals("14"))
+        else if (kwotaPo.startsWith("14", 1))
             slownie += " czternaście";
-        else if (kwotaPo.substring(1, 3).equals("15"))
+        else if (kwotaPo.startsWith("15", 1))
             slownie += " piętnaście";
-        else if (kwotaPo.substring(1, 3).equals("16"))
+        else if (kwotaPo.startsWith("16", 1))
             slownie += " szesnaście";
-        else if (kwotaPo.substring(1, 3).equals("17"))
+        else if (kwotaPo.startsWith("17", 1))
             slownie += " siedemnaście";
-        else if (kwotaPo.substring(1, 3).equals("18"))
+        else if (kwotaPo.startsWith("18", 1))
             slownie += " osiemnaście";
-        else if (kwotaPo.substring(1, 3).equals("19"))
+        else if (kwotaPo.startsWith("19", 1))
             slownie += " dziewietnaście";
 
-        else if (kwotaPo.substring(2, 3).equals("1"))
+        else if (kwotaPo.charAt(2) == '1')
         {
             slownie += " jeden";
             //jezeli kwota zaczyna się od tysiąca np. 1.234,89
             if (slownie.equals(" jeden"))
                 post = "tysiąc";
         }
-        else if (kwotaPo.substring(2, 3).equals("2"))
+        else if (kwotaPo.charAt(2) == '2')
         {
             slownie += " dwa";
             post = "tysięce";
         }
-        else if (kwotaPo.substring(2, 3).equals("3"))
+        else if (kwotaPo.charAt(2) == '3')
         {
             slownie += " trzy";
             post = "tysięce";
         }
-        else if (kwotaPo.substring(2, 3).equals("4"))
+        else if (kwotaPo.charAt(2) == '4')
         {
             slownie += " cztery";
             post = "tysięce";
         }
-        else if (kwotaPo.substring(2, 3).equals("5"))
+        else if (kwotaPo.charAt(2) == '5')
             slownie += " pięć";
-        else if (kwotaPo.substring(2, 3).equals("6"))
+        else if (kwotaPo.charAt(2) == '6')
             slownie += " sześć";
-        else if (kwotaPo.substring(2, 3).equals("7"))
+        else if (kwotaPo.charAt(2) == '7')
             slownie += " siedem";
-        else if (kwotaPo.substring(2, 3).equals("8"))
+        else if (kwotaPo.charAt(2) == '8')
             slownie += " osiem";
-        else if (kwotaPo.substring(2, 3).equals("9"))
+        else if (kwotaPo.charAt(2) == '9')
             slownie += " dziewięć";
         //jeżęli są tysiące
         if (kwota.length() > 6)
@@ -155,85 +155,83 @@ public class MoneyUtils {
         //
         //setki
         //
-        if (kwotaPo.substring(3, 4).equals("1"))
+        if (kwotaPo.charAt(3) == '1')
             slownie += " sto";
-        else if (kwotaPo.substring(3, 4).equals("2"))
+        else if (kwotaPo.charAt(3) == '2')
             slownie += " dwieście";
-        else if (kwotaPo.substring(3, 4).equals("3"))
+        else if (kwotaPo.charAt(3) == '3')
             slownie += " trzysta";
-        else if (kwotaPo.substring(3, 4).equals("4"))
+        else if (kwotaPo.charAt(3) == '4')
             slownie += " czterysta";
-        else if (kwotaPo.substring(3, 4).equals("5"))
+        else if (kwotaPo.charAt(3) == '5')
             slownie += " pięćset";
-        else if (kwotaPo.substring(3, 4).equals("6"))
+        else if (kwotaPo.charAt(3) == '6')
             slownie += " sześćset";
-        else if (kwotaPo.substring(3, 4).equals("7"))
+        else if (kwotaPo.charAt(3) == '7')
             slownie += " siedemset";
-        else if (kwotaPo.substring(3, 4).equals("8"))
+        else if (kwotaPo.charAt(3) == '8')
             slownie += " osiemset";
-        else if (kwotaPo.substring(3, 4).equals("9"))
+        else if (kwotaPo.charAt(3) == '9')
             slownie += " dziewięćset";
 
 
-        if (kwotaPo.substring(4, 5).equals("2"))
+        if (kwotaPo.charAt(4) == '2')
             slownie += " dwadzieścia";
-        else if (kwotaPo.substring(4, 5).equals("3"))
+        else if (kwotaPo.charAt(4) == '3')
             slownie += " trzydzieści";
-        else if (kwotaPo.substring(4, 5).equals("4"))
+        else if (kwotaPo.charAt(4) == '4')
             slownie += " czterdześci";
-        else if (kwotaPo.substring(4, 5).equals("5"))
+        else if (kwotaPo.charAt(4) == '5')
             slownie += " pięćdziesiąt";
-        else if (kwotaPo.substring(4, 5).equals("6"))
+        else if (kwotaPo.charAt(4) == '6')
             slownie += " sześćdziesiąt";
-        else if (kwotaPo.substring(4, 5).equals("7"))
+        else if (kwotaPo.charAt(4) == '7')
             slownie += " siedemdziesiąt";
-        else if (kwotaPo.substring(4, 5).equals("8"))
+        else if (kwotaPo.charAt(4) == '8')
             slownie += " osiemdziesiąt";
-        else if (kwotaPo.substring(4, 5).equals("9"))
+        else if (kwotaPo.charAt(4) == '9')
             slownie += " dziewięćdziesiąt";
 
-        if (kwotaPo.substring(4, 6).equals("10"))
+        if (kwotaPo.startsWith("10", 4))
             slownie += " dziesięć";
-        else if (kwotaPo.substring(4, 6).equals("11"))
+        else if (kwotaPo.startsWith("11", 4))
             slownie += " jedenaśie";
-        else if (kwotaPo.substring(4, 6).equals("12"))
+        else if (kwotaPo.startsWith("12", 4))
             slownie += " dwanaście";
-        else if (kwotaPo.substring(4, 6).equals("13"))
+        else if (kwotaPo.startsWith("13", 4))
             slownie += " trzynaście";
-        else if (kwotaPo.substring(4, 6).equals("14"))
+        else if (kwotaPo.startsWith("14", 4))
             slownie += " czternaście";
-        else if (kwotaPo.substring(4, 6).equals("15"))
+        else if (kwotaPo.startsWith("15", 4))
             slownie += " piętnaście";
-        else if (kwotaPo.substring(4, 6).equals("16"))
+        else if (kwotaPo.startsWith("16", 4))
             slownie += " szesnaście";
-        else if (kwotaPo.substring(4, 6).equals("17"))
+        else if (kwotaPo.startsWith("17", 4))
             slownie += " siedemnaście";
-        else if (kwotaPo.substring(4, 6).equals("18"))
+        else if (kwotaPo.startsWith("18", 4))
             slownie += " osiemnaście";
-        else if (kwotaPo.substring(4, 6).equals("19"))
+        else if (kwotaPo.startsWith("19", 4))
             slownie += " dziewiętnaście";
 
-        else if (kwotaPo.substring(5, 6).equals("1"))
+        else if (kwotaPo.charAt(5) == '1')
             slownie += " jeden";
-        else if (kwotaPo.substring(5, 6).equals("2"))
+        else if (kwotaPo.charAt(5) == '2')
             slownie += " dwa";
-        else if (kwotaPo.substring(5, 6).equals("3"))
+        else if (kwotaPo.charAt(5) == '3')
             slownie += " trzy";
-        else if (kwotaPo.substring(5, 6).equals("4"))
+        else if (kwotaPo.charAt(5) == '4')
             slownie += " cztery";
-        else if (kwotaPo.substring(5, 6).equals("5"))
+        else if (kwotaPo.charAt(5) == '5')
             slownie += " pięć";
-        else if (kwotaPo.substring(5, 6).equals("6"))
+        else if (kwotaPo.charAt(5) == '6')
             slownie += " sześć";
-        else if (kwotaPo.substring(5, 6).equals("7"))
+        else if (kwotaPo.charAt(5) == '7')
             slownie += " siedem";
-        else if (kwotaPo.substring(5, 6).equals("8"))
+        else if (kwotaPo.charAt(5) == '8')
             slownie += " osiem";
-        else if (kwotaPo.substring(5, 6).equals("9"))
+        else if (kwotaPo.charAt(5) == '9')
             slownie += " dziewięć";
 
-        if (slownie == null)
-            slownie += " zero";
         slownie += " PLN " + kwota.substring(kwota.length() - 2) + "/100";
 
         return slownie;

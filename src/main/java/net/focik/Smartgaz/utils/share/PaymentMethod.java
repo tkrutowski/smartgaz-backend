@@ -1,5 +1,8 @@
 package net.focik.Smartgaz.utils.share;
 
+import lombok.Getter;
+
+@Getter
 public enum PaymentMethod {
     CASH("gotówka"),
     CASH_LATE("gotówka terminowa"),
@@ -11,7 +14,4 @@ public enum PaymentMethod {
         this.viewValue = viewValue;
     }
 
-    public String getViewValue() {
-        return viewValue;
-    }
 }
