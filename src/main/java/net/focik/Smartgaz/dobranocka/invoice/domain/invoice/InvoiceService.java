@@ -2,7 +2,7 @@ package net.focik.Smartgaz.dobranocka.invoice.domain.invoice;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.ICustomerService;
+import net.focik.Smartgaz.dobranocka.customer.domain.ICustomerService;
 import net.focik.Smartgaz.dobranocka.invoice.domain.exception.InvoiceAlreadyExistException;
 import net.focik.Smartgaz.dobranocka.invoice.domain.exception.InvoiceNotFoundException;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.secondary.InvoiceRepository;

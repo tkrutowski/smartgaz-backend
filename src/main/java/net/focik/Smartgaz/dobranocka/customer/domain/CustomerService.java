@@ -1,9 +1,9 @@
-package net.focik.Smartgaz.dobranocka.customer.domain.customer;
+package net.focik.Smartgaz.dobranocka.customer.domain;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.secondary.CustomerRepository;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.secondary.CustomerRepository;
 import net.focik.Smartgaz.dobranocka.customer.domain.exception.CustomerAlreadyExistException;
 import net.focik.Smartgaz.dobranocka.customer.domain.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;

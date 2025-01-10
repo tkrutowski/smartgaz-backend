@@ -1,4 +1,4 @@
-package net.focik.Smartgaz.dobranocka.customer.domain.customer;
+package net.focik.Smartgaz.dobranocka.customer.domain;
 
 import lombok.*;
 

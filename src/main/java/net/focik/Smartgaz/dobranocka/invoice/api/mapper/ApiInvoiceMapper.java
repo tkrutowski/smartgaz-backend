@@ -1,6 +1,6 @@
 package net.focik.Smartgaz.dobranocka.invoice.api.mapper;
 
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.Customer;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.customer.domain.exception.CustomerNotValidException;
 import net.focik.Smartgaz.dobranocka.invoice.api.dto.*;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;

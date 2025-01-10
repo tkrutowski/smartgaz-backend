@@ -1,7 +1,7 @@
 package net.focik.Smartgaz.dobranocka.invoice.domain.invoice;
 
 import lombok.*;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.Customer;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.invoice.domain.exception.InvoiceItemNotFoundException;
 import net.focik.Smartgaz.utils.share.PaymentMethod;
 import net.focik.Smartgaz.utils.share.PaymentStatus;

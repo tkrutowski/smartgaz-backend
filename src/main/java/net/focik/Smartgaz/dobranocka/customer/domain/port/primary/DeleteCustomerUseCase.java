@@ -1,4 +1,4 @@
-package net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary;
+package net.focik.Smartgaz.dobranocka.customer.domain.port.primary;
 
 public interface DeleteCustomerUseCase {
 

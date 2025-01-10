@@ -7,7 +7,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.Customer;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.Company;
 import net.focik.Smartgaz.utils.MoneyUtils;
 import org.javamoney.moneta.Money;

@@ -1,10 +1,10 @@
-package net.focik.Smartgaz.dobranocka.customer.domain.customer;
+package net.focik.Smartgaz.dobranocka.customer.domain;
 
 import lombok.AllArgsConstructor;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.AddCustomerUseCase;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.DeleteCustomerUseCase;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.GetCustomerUseCase;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.primary.UpdateCustomerUseCase;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.AddCustomerUseCase;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.DeleteCustomerUseCase;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.GetCustomerUseCase;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.UpdateCustomerUseCase;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

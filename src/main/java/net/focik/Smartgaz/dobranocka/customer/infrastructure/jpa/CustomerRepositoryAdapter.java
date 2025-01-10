@@ -1,8 +1,8 @@
 package net.focik.Smartgaz.dobranocka.customer.infrastructure.jpa;
 
 import lombok.AllArgsConstructor;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.Customer;
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.port.secondary.CustomerRepository;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
+import net.focik.Smartgaz.dobranocka.customer.domain.port.secondary.CustomerRepository;
 import net.focik.Smartgaz.dobranocka.customer.infrastructure.dto.CustomerDbDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

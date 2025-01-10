@@ -1,6 +1,6 @@
-package net.focik.Smartgaz.dobranocka.customer.domain.customer.port.secondary;
+package net.focik.Smartgaz.dobranocka.customer.domain.port.secondary;
 
-import net.focik.Smartgaz.dobranocka.customer.domain.customer.Customer;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
