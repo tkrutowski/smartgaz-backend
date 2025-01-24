@@ -5,6 +5,11 @@ import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.AddCustomerUse
 import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.DeleteCustomerUseCase;
 import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.GetCustomerUseCase;
 import net.focik.Smartgaz.dobranocka.customer.domain.port.primary.UpdateCustomerUseCase;
+import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;
+import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.InvoiceFacade;
+import net.focik.Smartgaz.dobranocka.rent.domain.RentFacade;
+import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
+import net.focik.Smartgaz.utils.exceptions.ObjectCanNotBeDeletedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +19,8 @@ import java.util.List;
 public class CustomerFacade implements AddCustomerUseCase, UpdateCustomerUseCase, GetCustomerUseCase, DeleteCustomerUseCase {
 
     private final ICustomerService customerService;
+    private final InvoiceFacade invoiceFacade;
+    private final RentFacade rentFacade;
 
     @Override
     public Customer addCustomer(Customer customer) {
@@ -27,8 +34,16 @@ public class CustomerFacade implements AddCustomerUseCase, UpdateCustomerUseCase
 
     @Override
     public void deleteCustomer(Integer id) {
-        //todo dodac sprawdzanie
-//        throw new ObjectCanNotBeDeletedException("Istnieją faktury");
+        Customer byId = findById(id);
+
+        List<Invoice> invoicesByCustomer = invoiceFacade.findAllByCustomer(byId);
+        if (!invoicesByCustomer.isEmpty()) {
+            throw new ObjectCanNotBeDeletedException("Istnieją faktury.");
+        }
+        List<Reservation> reservationsByCustomer = rentFacade.findAllByCustomer(byId);
+        if (!reservationsByCustomer.isEmpty()) {
+            throw new ObjectCanNotBeDeletedException("Istnieją rezerwacje.");
+        }
         customerService.deleteCustomer(id);
     }
 
