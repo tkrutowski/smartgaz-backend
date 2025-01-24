@@ -2,6 +2,9 @@ package net.focik.Smartgaz.dobranocka.invoice.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import net.focik.Smartgaz.dobranocka.customer.api.dto.CustomerDto;
+import net.focik.Smartgaz.utils.share.PaymentMethod;
+import net.focik.Smartgaz.utils.share.PaymentStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,21 +17,17 @@ import java.util.List;
 @ToString
 public class InvoiceDto {
     private int idInvoice;
-    private int idCustomer;
     private String invoiceNumber;
-    private Number amount;
+    private PaymentMethod paymentMethod;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")
     private LocalDate sellDate;//data sprzedaży
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")
     private LocalDate invoiceDate;//data faktury
+    private PaymentStatus paymentStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")
     private LocalDate paymentDate;//termin zapłaty
-    private int paymentDeadline;
-    private PaymentStatusDto paymentStatus;
-    private PaymentMethodDto paymentMethod;
-    private String paymentTypeView;
     private String otherInfo;
-    private String customerName;
     private List<InvoiceItemDto> invoiceItems;
+    private CustomerDto customer;
 
 }

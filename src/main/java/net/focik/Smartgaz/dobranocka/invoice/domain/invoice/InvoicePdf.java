@@ -347,7 +347,7 @@ public class InvoicePdf {
             table.addCell(cellUnit);
 
             //amount per unit
-            PdfPCell cellPerUnit = new PdfPCell(new Phrase(String.format("%.2f", item.getAmount().getNumberStripped()), FONT_10));
+            PdfPCell cellPerUnit = new PdfPCell(new Phrase(String.format("%.2f", item.getAmount()), FONT_10));
             cellPerUnit.setHorizontalAlignment(Element.ALIGN_CENTER);
             cellPerUnit.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(cellPerUnit);

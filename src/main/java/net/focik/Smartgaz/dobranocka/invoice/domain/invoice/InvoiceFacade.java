@@ -1,6 +1,7 @@
 package net.focik.Smartgaz.dobranocka.invoice.domain.invoice;
 
 import lombok.AllArgsConstructor;
+import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.primary.*;
 import net.focik.Smartgaz.dobranocka.settings.domain.CompanyFacade;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.Company;
@@ -17,30 +18,30 @@ public class InvoiceFacade implements UpdateInvoiceUseCase, DeleteInvoiceUseCase
     private final CompanyFacade companyFacade;
 
     public Invoice addInvoice(Invoice invoice) {
-        int idInvoice = invoiceService.saveInvoice(invoice).getIdInvoice();
-        return  findFullById(idInvoice);
+        return invoiceService.saveInvoice(invoice);
     }
 
     public Invoice findById(Integer id) {
         return invoiceService.findById(id);
     }
 
-    public Invoice findFullById(Integer id) {
-        return invoiceService.findFullById(id);
-    }
-
     public int getNewInvoiceNumber(int year) {
         return invoiceService.getNewInvoiceNumber(year);
     }
 
-    public List<Invoice> findAllBy(PaymentStatus status, Boolean getItems, Boolean getCustomer) {
-        return invoiceService.findByAll(status, getItems, getCustomer);
+    @Override
+    public List<Invoice> findAllByStatus(PaymentStatus status) {
+        return invoiceService.findByAll(status);
+    }
+
+    @Override
+    public List<Invoice> findAllByCustomer(Customer customer) {
+        return invoiceService.findByCustomer(customer);
     }
 
     @Override
     public Invoice updateInvoice(Invoice invoice) {
-        int idInvoice = invoiceService.updateInvoice(invoice).getIdInvoice();
-        return findFullById(idInvoice);
+        return invoiceService.updateInvoice(invoice);
     }
 
     @Override
@@ -58,4 +59,5 @@ public class InvoiceFacade implements UpdateInvoiceUseCase, DeleteInvoiceUseCase
         Company company = companyFacade.get();
         return InvoicePdf.createPdf(invoice, company);
     }
+
 }

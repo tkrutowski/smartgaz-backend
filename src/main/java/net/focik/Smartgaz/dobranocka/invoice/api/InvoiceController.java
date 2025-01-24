@@ -3,14 +3,12 @@ package net.focik.Smartgaz.dobranocka.invoice.api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.focik.Smartgaz.dobranocka.invoice.api.dto.InvoiceDto;
-import net.focik.Smartgaz.dobranocka.invoice.api.dto.PaymentMethodDto;
 import net.focik.Smartgaz.dobranocka.invoice.api.dto.VatDto;
 import net.focik.Smartgaz.dobranocka.invoice.api.mapper.ApiInvoiceMapper;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.primary.*;
 import net.focik.Smartgaz.utils.exceptions.ExceptionHandling;
 import net.focik.Smartgaz.utils.exceptions.HttpResponse;
-import net.focik.Smartgaz.utils.share.PaymentMethod;
 import net.focik.Smartgaz.utils.share.PaymentStatus;
 import net.focik.Smartgaz.utils.share.Vat;
 import org.springframework.core.io.Resource;
@@ -55,14 +53,17 @@ public class InvoiceController extends ExceptionHandling {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("Invoice with id {} found: {}", id, invoice);
-        return new ResponseEntity<>(mapper.toDto(invoice), HttpStatus.OK);
+        InvoiceDto dto = mapper.toDto(invoice);
+        log.debug("Mapped to InvoiceDto dto: {}", dto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @GetMapping("/pdf/{id}")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_INVOICE_READ_ALL','DOBRANOCKA_INVOICE_READ') or hasRole('ROLE_ADMIN')")
     ResponseEntity<?> getPdfById(@PathVariable int id) {
         log.info("Request to generate PDF for invoice with id: {}", id);
-        Invoice invoice = getInvoiceUseCase.findFullById(id);
+        Invoice invoice = getInvoiceUseCase.findById(id);
 
         if (invoice == null) {
             log.warn("Invoice with id {} not found", id);
@@ -106,31 +107,37 @@ public class InvoiceController extends ExceptionHandling {
     ResponseEntity<List<InvoiceDto>> getAllInvoices(@RequestParam PaymentStatus status) {
         log.info("Request to find all invoices with PaymentStatus: {}", status);
         List<Invoice> invoices;
-        invoices = getInvoiceUseCase.findAllBy(status, true, false);
+        invoices = getInvoiceUseCase.findAllByStatus(status);
         log.info("Found {} invoices with PaymentStatus: {}", invoices.size(), status);
 
         return new ResponseEntity<>(invoices.stream()
+                .peek(invoice -> log.debug("Found invoice {}", invoice))
                 .map(mapper::toDto)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .peek(invoiceDto -> log.debug("Mapped found invoice {}", invoiceDto))
+                .toList(), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_INVOICE_WRITE_ALL','DOBRANOCKA_INVOICE_WRITE') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<InvoiceDto> addInvoice(@RequestBody InvoiceDto invoiceDto) {
         log.info("Request to add a new invoice received.");
-        Invoice invoice = mapper.toDomain(invoiceDto);
-        log.debug("Mapped InvoiceDto to domain object: {}", invoice);
+        Invoice invoiceToAdd = mapper.toDomain(invoiceDto);
+        log.debug("Mapped InvoiceDto to domain object: {}", invoiceToAdd);
 
-        Invoice result = addInvoiceUseCase.addInvoice(invoice);
+        Invoice addedInvoice = addInvoiceUseCase.addInvoice(invoiceToAdd);
 
-        if (result != null && result.getIdInvoice() > 0) {
-            log.info("Invoice added successfully with id = {}", result.getIdInvoice());
+        if (addedInvoice != null && addedInvoice.getIdInvoice() > 0) {
+            log.info("Invoice added successfully with id = {}", addedInvoice.getIdInvoice());
         } else {
             log.warn("Invoice addition failed.");
         }
 
-        assert result != null;
-        return new ResponseEntity<>(mapper.toDto(result), HttpStatus.CREATED);
+        assert addedInvoice != null;
+
+        InvoiceDto dto = mapper.toDto(addedInvoice);
+        log.debug("Mapped to InvoiceDto dto: {}", dto);
+
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -150,12 +157,13 @@ public class InvoiceController extends ExceptionHandling {
         }
 
         assert updatedInvoice != null;
-        return new ResponseEntity<>(mapper.toDto(updatedInvoice), HttpStatus.OK);
+        InvoiceDto dto = mapper.toDto(updatedInvoice);
+        log.debug("Mapped to InvoiceDto dto: {}", dto);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idInvoice}")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_INVOICE_DELETE_ALL','DOBRANOCKA_INVOICE_DELETE') or hasRole('ROLE_ADMIN')")
-
     public ResponseEntity<HttpResponse> deleteInvoice(@PathVariable int idInvoice) {
         log.info("Request to delete invoice with id: {}", idInvoice);
         deleteInvoiceUseCase.deleteInvoice(idInvoice);
@@ -170,17 +178,6 @@ public class InvoiceController extends ExceptionHandling {
         updateInvoiceUseCase.updatePaymentStatus(id, status);
         log.info("Payment status updated successfully for invoice with id: {} to status: {}", id, status);
         return response(HttpStatus.OK, "Zaaktualizowano status pracownika.");
-    }
-
-    @GetMapping("/paymenttype")
-    ResponseEntity<List<PaymentMethodDto>> getPaymentTypes() {
-        log.info("Request to get all payment types.");
-        PaymentMethod[] collect = (PaymentMethod.values());
-        List<PaymentMethodDto> paymentTypeDtos = Arrays.stream(collect)
-                .map(type -> new PaymentMethodDto(type.name(), type.getViewValue()))
-                .collect(Collectors.toList());
-        log.info("Found {} payment types.", paymentTypeDtos.size());
-        return new ResponseEntity<>(paymentTypeDtos, OK);
     }
 
     @GetMapping("/vattype")

@@ -7,7 +7,4 @@ import java.util.List;
 
 interface InvoiceItemDtoRepository extends JpaRepository<InvoiceItemDbDto, Long> {
 
-    List<InvoiceItemDbDto> findAllByIdInvoice(Integer invoiceId);
-
-    void deleteAllByIdInvoice(Integer id);
 }

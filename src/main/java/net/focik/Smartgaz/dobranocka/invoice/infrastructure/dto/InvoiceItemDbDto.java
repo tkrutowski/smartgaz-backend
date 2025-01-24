@@ -16,9 +16,7 @@ import java.math.BigDecimal;
 public class InvoiceItemDbDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long idInvoiceItem;
-    private Integer idInvoice;
+    private Long id;
     private String name;
     private String pkwiu;
     private String unit;
@@ -27,4 +25,8 @@ public class InvoiceItemDbDto {
     @Column(name = "vat_type")
     @Enumerated(EnumType.STRING)
     private Vat vat;
+
+    @ManyToOne
+    @JoinColumn(name = "id_invoice", nullable = false) // Klucz obcy
+    private InvoiceDbDto invoice;
 }

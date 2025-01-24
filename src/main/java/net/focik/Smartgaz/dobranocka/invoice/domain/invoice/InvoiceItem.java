@@ -1,5 +1,6 @@
 package net.focik.Smartgaz.dobranocka.invoice.domain.invoice;
 
+import jakarta.persistence.Transient;
 import lombok.*;
 import net.focik.Smartgaz.utils.share.Vat;
 import org.javamoney.moneta.Money;
@@ -11,24 +12,29 @@ import org.javamoney.moneta.Money;
 @Setter
 @ToString
 public class InvoiceItem {
+    private long id;
     private int idInvoice;
-    private long idInvoiceItem;
     private String name;
     private String pkwiu;
     private String unit;
     private float quantity;
-    private Money amount;//netto
+    private double amount;//netto
     private Vat vat;
 
+    @Transient
     public Money getAmountSumNet() {
-        return amount.multiply(quantity);
+        Money result = Money.of(amount, "PLN");
+        return result.multiply(quantity);
     }
 
+    @Transient
     public Money getAmountSumVat() {
         return  getAmountSumGross().subtract(getAmountSumNet());
     }
 
+    @Transient
     public Money getAmountSumGross() {
-        return amount.multiply(quantity).multiply(vat.getMultiplier());
+        Money result = Money.of(amount, "PLN");
+        return result.multiply(quantity).multiply(vat.getMultiplier());
     }
 }
