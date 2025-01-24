@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class RentService {
+class RoomService {
 
     private final RoomRepository roomRepository;
 
@@ -27,6 +27,12 @@ class RentService {
         return roomRepository.save(room);
     }
 
+    public List<Bed> findAllBeds() {
+        return findAll().stream()
+                .map(Room::getBeds)
+                .flatMap(List::stream)
+                .toList();
+    }
 
     public Room findById(Integer id) {
         Optional<Room> byId = roomRepository.findById(id);
@@ -43,10 +49,12 @@ class RentService {
     public void deleteRoom(Integer id) {
         roomRepository.delete(id);
     }
+
     private void validate(Room room) {
         Optional<Room> byName = roomRepository.findByName(room.getName());
         if (byName.isPresent()) {
             throw new RoomAlreadyExistException("Room with NAME: " + room.getName() + " already exists");
         }
     }
+
 }

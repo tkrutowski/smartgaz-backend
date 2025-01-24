@@ -2,7 +2,6 @@ package net.focik.Smartgaz.dobranocka.rent.api;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.focik.Smartgaz.dobranocka.customer.api.dto.CustomerDto;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiRoomMapper;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
@@ -50,7 +49,7 @@ public class RoomController extends ExceptionHandling {
 
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_ROOM_READ_ALL','DOBRANOCKA_ROOM_READ') or hasRole('ROLE_ADMIN')")
-    ResponseEntity<List<RoomDto>> getAllCustomers() {
+    ResponseEntity<List<RoomDto>> getAllRooms() {
         log.info("Request to get rooms.");
 
         List<Room> roomList = getRoomUseCase.findAll();
@@ -89,7 +88,7 @@ public class RoomController extends ExceptionHandling {
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_ROOM_WRITE_ALL','DOBRANOCKA_ROOM_WRITE') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<RoomDto> updateCustomer(@RequestBody RoomDto roomDto) {
+    public ResponseEntity<RoomDto> updateRoom(@RequestBody RoomDto roomDto) {
         log.info("Request to edit a room received with data: {}", roomDto);
 
         Room roomToUpdate = mapper.toDomain(roomDto);

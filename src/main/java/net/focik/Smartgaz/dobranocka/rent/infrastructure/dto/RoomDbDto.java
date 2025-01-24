@@ -3,7 +3,7 @@ package net.focik.Smartgaz.dobranocka.rent.infrastructure.dto;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class RoomDbDto {
     private Integer id;
     private String name;
     private String color;
-    private String beds;
-    private BigDecimal price;//netto
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BedDbDto> beds;
     private String info;
 }

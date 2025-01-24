@@ -2,7 +2,6 @@ package net.focik.Smartgaz.dobranocka.rent.domain;
 
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -15,7 +14,6 @@ public class Room {
     private int id;
     private String name;
     private String color;
-    private BigDecimal price;
+    private List<Bed> beds;
     private String info;
-    private List<BedType> bedType;
 }

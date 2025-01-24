@@ -1,10 +1,10 @@
 package net.focik.Smartgaz.dobranocka.rent.api.dto;
 
 import lombok.*;
+import net.focik.Smartgaz.dobranocka.rent.domain.BedStatus;
 import net.focik.Smartgaz.dobranocka.rent.domain.BedType;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -12,10 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class RoomDto {
+public class BedDto {
     private int id;
     private String name;
-    private String color;
-    private List<BedDto> beds;
-    private String info;
+    private BedType type;
+    private BedStatus status;
+    private BigDecimal priceDay;
+    private BigDecimal priceMonth;
 }

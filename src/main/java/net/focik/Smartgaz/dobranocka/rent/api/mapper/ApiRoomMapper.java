@@ -1,39 +1,21 @@
 package net.focik.Smartgaz.dobranocka.rent.api.mapper;
 
+import lombok.RequiredArgsConstructor;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ApiRoomMapper {
-
+    private final ModelMapper modelMapper;
 
     public Room toDomain(RoomDto dto) {
-//        valid(dto);
-        return Room.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .color(dto.getColor())
-                .bedType(dto.getBeds())
-                .price(dto.getPrice())
-                .info(dto.getInfo())
-                .build();
+        return modelMapper.map(dto, Room.class);
     }
 
     public RoomDto toDto(Room room) {
-        return RoomDto.builder()
-                .id(room.getId())
-                .name(room.getName())
-                .color(room.getColor())
-                .beds(room.getBedType())
-                .price(room.getPrice())
-                .info(room.getInfo())
-                .build();
+        return modelMapper.map(room, RoomDto.class);
     }
-//    private void valid(RoomDto dto) {
-//        if (dto.getName() == 0)
-//            throw new CustomerNotValidException("IdCustomer can't be null.");
-//        if (dto.getInvoiceDate().isEmpty())
-//            throw new InvoiceNotValidException("Date can't be empty.");
-//    }
 }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
 import net.focik.Smartgaz.dobranocka.rent.domain.port.secondary.RoomRepository;
 import net.focik.Smartgaz.dobranocka.rent.infrastructure.dto.RoomDbDto;
-import net.focik.Smartgaz.dobranocka.rent.infrastructure.mapper.JpaRoomMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,13 +15,16 @@ import java.util.Optional;
 public class RoomRepositoryAdapter implements RoomRepository {
 
     private final RoomDtoRepository roomDtoRepository;
-    private final JpaRoomMapper mapper;
+    private final ModelMapper mapper;
 
     @Override
     public Room save(Room room) {
-        RoomDbDto customerDbDto = mapper.toDto(room);
-        RoomDbDto saved = roomDtoRepository.save(customerDbDto);
-        return mapper.toDomain(saved);
+        RoomDbDto roomDbDto = mapper.map(room, RoomDbDto.class);
+        if (roomDbDto.getBeds() != null) {
+            roomDbDto.getBeds().forEach(bed -> bed.setRoom(roomDbDto));
+        }
+        RoomDbDto saved = roomDtoRepository.save(roomDbDto);
+        return mapper.map(saved, Room.class);
     }
 
     @Override
@@ -32,25 +35,20 @@ public class RoomRepositoryAdapter implements RoomRepository {
     @Override
     public List<Room> findAll() {
         return roomDtoRepository.findAll().stream()
-                .map(mapper::toDomain)
+                .peek(roomDbDto -> System.out.println(roomDbDto.toString()))
+                .map(roomDbDto -> mapper.map(roomDbDto, Room.class))
                 .toList();
     }
 
     @Override
     public Optional<Room> findById(Integer id) {
-        return roomDtoRepository.findById(id).map(mapper::toDomain);
+        return roomDtoRepository.findById(id).map(roomDbDto -> mapper.map(roomDbDto, Room.class));
     }
-//
-//    @Override
-//    public Optional<Customer> findByNip(String nip) {
-//        Optional<CustomerDbDto> dbDto = roomDtoRepository.findAllByNip(nip).stream().findFirst();
-//        return dbDto.map(customerDbDto -> mapper.map(customerDbDto, Customer.class));
-//    }
-//
+
     @Override
     public Optional<Room> findByName(String name) {
         Optional<RoomDbDto> byName = roomDtoRepository.findByName(name);
-        return byName.map(mapper::toDomain);
+        return byName.map(roomDbDto -> mapper.map(roomDbDto, Room.class));
     }
 
 }

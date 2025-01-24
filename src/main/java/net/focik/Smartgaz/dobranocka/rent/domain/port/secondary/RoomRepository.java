@@ -13,12 +13,6 @@ public interface RoomRepository {
 
     void delete(Integer id);
 
-//    List<Customer> findAll();
-
-//    Optional<Customer> findById(Integer id);
-
-//    Optional<Customer> findByNip(String nip);
-
     Optional<Room> findByName(String name);
 
     List<Room> findAll();
