@@ -5,6 +5,7 @@ import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import net.focik.Smartgaz.userservice.domain.exceptions.*;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -111,6 +112,12 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<HttpResponse> dataViolationException(DataIntegrityViolationException exception) {
+        log.error("DataIntegrityViolationException: " + exception.getMessage(), exception);
+//        return createHttpResponse(INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
+        return createHttpResponse(UNPROCESSABLE_ENTITY, "Nie można usunąć elementu.");
+    }
 
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         HttpResponse httpResponse = new HttpResponse(httpStatus.value(), httpStatus,
@@ -125,10 +132,7 @@ public class ExceptionHandling implements ErrorController {
 //    }
 //
 //
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<HttpResponse> badCredentialsException() {
-//        return createHttpResponse(BAD_REQUEST, INCORRECT_CREDENTIALS);
-//    }
+
 //
 //
 //
