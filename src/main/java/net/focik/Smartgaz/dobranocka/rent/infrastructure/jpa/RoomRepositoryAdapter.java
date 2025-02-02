@@ -46,6 +46,12 @@ public class RoomRepositoryAdapter implements RoomRepository {
     }
 
     @Override
+    public Optional<Room> findByBedId(Integer id) {
+        Optional<RoomDbDto> byName = roomDtoRepository.findRoomByBedId(id);
+        return byName.map(roomDbDto -> mapper.map(roomDbDto, Room.class));
+    }
+
+    @Override
     public Optional<Room> findByName(String name) {
         Optional<RoomDbDto> byName = roomDtoRepository.findByName(name);
         return byName.map(roomDbDto -> mapper.map(roomDbDto, Room.class));

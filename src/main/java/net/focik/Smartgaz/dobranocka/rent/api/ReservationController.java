@@ -31,7 +31,7 @@ public class ReservationController extends ExceptionHandling {
     private final ApiRoomMapper roomMapper;
     private final AddReservationUseCase addReservationUseCase;
     private final GetReservationUseCase getReservationUseCase;
-    private final UpdateRoomUseCase updateRoomUseCase;
+    private final UpdateReservationUseCase updateReservationUseCase;
     private final DeleteReservationUseCase deleteReservationUseCase;
 
     @GetMapping("/{id}")
@@ -111,17 +111,17 @@ public class ReservationController extends ExceptionHandling {
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_WRITE_ALL','DOBRANOCKA_RESERVATION_WRITE') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<RoomDto> updateReservation(@RequestBody RoomDto roomDto) {
-        log.info("Request to edit a room received with data: {}", roomDto);
+    public ResponseEntity<ReservationDto> updateReservation(@RequestBody ReservationDto reservationDto) {
+        log.info("Request to edit a reservation received with data: {}", reservationDto);
 
-        Room roomToUpdate = roomMapper.toDomain(roomDto);
-        log.debug("Mapped Room DTO to domain object: {}", roomToUpdate);
+        Reservation reservationToUpdate = mapper.toDomain(reservationDto);
+        log.debug("Mapped Reservation DTO to domain object: {}", reservationToUpdate);
 
-        Room updatedRoom = updateRoomUseCase.updateRoom(roomToUpdate);
-        log.info("Room updated successfully: {}", updatedRoom);
+        Reservation updatedReservation = updateReservationUseCase.updateReservation(reservationToUpdate);
+        log.info("Reservation updated successfully: {}", updatedReservation);
 
-        RoomDto dto = roomMapper.toDto(updatedRoom);
-        log.debug("Mapped Room DTO to domain object: {}", dto);
+        ReservationDto dto = mapper.toDto(updatedReservation);
+        log.debug("Mapped Reservation DTO to domain object: {}", dto);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

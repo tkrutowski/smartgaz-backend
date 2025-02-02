@@ -57,4 +57,21 @@ class ReservationService {
                 .filter(reservation -> reservation.getReservationStatus().equals(status))
                 .toList();
     }
+
+    public Reservation updateReservation(Reservation reservation) {
+        findById(reservation.getId());
+        return reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> findAllActiveReservations(LocalDate now) {
+        return reservationRepository.findActiveReservationsByDate(now);
+    }
+
+    public List<Reservation> findAllActiveReservationsByEndDate(LocalDate now) {
+        return reservationRepository.findActiveReservationsByEndDate(now);
+    }
+
+    public List<Reservation> findAllActiveReservationsByStartDate(LocalDate now) {
+        return reservationRepository.findActiveReservationsByStartDate(now);
+    }
 }

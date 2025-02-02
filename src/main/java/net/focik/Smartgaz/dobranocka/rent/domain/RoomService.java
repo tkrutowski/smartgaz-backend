@@ -42,6 +42,11 @@ class RoomService {
         return byId.get();
     }
 
+    public Room findByBed(Integer id) {
+        Optional<Room> byId = roomRepository.findByBedId(id);
+        return byId.orElse(null);
+    }
+
     public List<Room> findAll() {
         return roomRepository.findAll();
     }

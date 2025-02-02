@@ -1,5 +1,6 @@
 package net.focik.Smartgaz.dobranocka.customer.domain;
 
+import jakarta.persistence.Transient;
 import lombok.*;
 
 @Builder
@@ -21,6 +22,7 @@ public class Customer {
     private String regon;
     private String info;
 
+    @Transient
     public String getAddress() {
         return String.format("%s, %s %s",getStreet(), getZip(), getCity());
     }

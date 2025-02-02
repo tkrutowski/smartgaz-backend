@@ -18,4 +18,6 @@ public interface RoomRepository {
     List<Room> findAll();
 
     Optional<Room> findById(Integer id);
+
+    Optional<Room> findByBedId(Integer id);
 }

@@ -10,9 +10,11 @@ ENV DEBUG=false
 
 # Set default cron value if not provided
 ENV SCHEDULER_CRON="0 0 8 * * FRI"
+ENV SCHEDULER_RENT_AFTER="0 0 11 * * *"
+ENV SCHEDULER_RENT_START="0 0 15 * * *"
 
 WORKDIR /app
-COPY target/smartgaz-1.3.0.jar .
+COPY target/smartgaz-1.3.1.jar .
 COPY src/main/resources ./src/main/resources
 EXPOSE 8070
-CMD  java -jar smartgaz-1.3.0.jar
+CMD  java -jar smartgaz-1.3.1.jar

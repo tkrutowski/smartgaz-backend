@@ -8,6 +8,7 @@ import net.focik.Smartgaz.dobranocka.rent.infrastructure.dto.ReservationDbDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,5 +61,26 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
         return reservationDtoRepository.findAll().stream()
                 .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
                 .toList();
+    }
+
+    @Override
+    public List<Reservation> findActiveReservationsByDate(LocalDate date) {
+        return reservationDtoRepository.findAllByStartDateIsBeforeAndEndDateIsAfter(date, date).stream()
+                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findActiveReservationsByEndDate(LocalDate endDate) {
+        return reservationDtoRepository.findAllByEndDate(endDate).stream()
+                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findActiveReservationsByStartDate(LocalDate endDate) {
+        return reservationDtoRepository.findAllByStartDate(endDate).stream()
+                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .collect(Collectors.toList());
     }
 }
