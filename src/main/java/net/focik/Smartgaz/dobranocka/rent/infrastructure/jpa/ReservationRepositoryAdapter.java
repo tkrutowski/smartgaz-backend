@@ -1,5 +1,6 @@
 package net.focik.Smartgaz.dobranocka.rent.infrastructure.jpa;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
@@ -71,6 +72,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     }
 
     @Override
+    @Transactional //needed for CRON
     public List<Reservation> findActiveReservationsByEndDate(LocalDate endDate) {
         return reservationDtoRepository.findAllByEndDate(endDate).stream()
                 .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
@@ -78,6 +80,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     }
 
     @Override
+    @Transactional //needed for CRON
     public List<Reservation> findActiveReservationsByStartDate(LocalDate endDate) {
         return reservationDtoRepository.findAllByStartDate(endDate).stream()
                 .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))

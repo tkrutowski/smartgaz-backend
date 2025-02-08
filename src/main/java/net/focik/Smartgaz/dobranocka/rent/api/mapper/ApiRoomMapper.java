@@ -18,4 +18,12 @@ public class ApiRoomMapper {
     public RoomDto toDto(Room room) {
         return modelMapper.map(room, RoomDto.class);
     }
+
+    public Bed toDomain(BedDto dto) {
+        return modelMapper.map(dto, Bed.class);
+    }
+
+    public BedDto toDto(Bed bed) {
+        return modelMapper.map(bed, BedDto.class);
+    }
 }

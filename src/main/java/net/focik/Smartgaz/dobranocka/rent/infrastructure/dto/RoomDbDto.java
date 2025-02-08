@@ -19,7 +19,7 @@ public class RoomDbDto {
     private Integer id;
     private String name;
     private String color;
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BedDbDto> beds;
     private String info;
 }

@@ -2,8 +2,10 @@ package net.focik.Smartgaz.dobranocka.rent.api;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.focik.Smartgaz.dobranocka.rent.api.dto.BedDto;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiRoomMapper;
+import net.focik.Smartgaz.dobranocka.rent.domain.Bed;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
 import net.focik.Smartgaz.dobranocka.rent.domain.port.primary.AddRoomUseCase;
 import net.focik.Smartgaz.dobranocka.rent.domain.port.primary.DeleteRoomUseCase;
@@ -113,6 +115,23 @@ public class RoomController extends ExceptionHandling {
         log.info("Room with id: {} deleted successfully", id);
 
         return response(HttpStatus.NO_CONTENT, "Pokój usunięty.");
+    }
+
+    @PutMapping("/bed")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_ROOM_WRITE_ALL','DOBRANOCKA_ROOM_WRITE') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<BedDto> updateBed(@RequestBody BedDto bedDto) {
+        log.info("Request to edit a bed received with data: {}", bedDto);
+
+        Bed bedToUpdate = mapper.toDomain(bedDto);
+        log.debug("Mapped Room DTO to domain object: {}", bedToUpdate);
+
+        Bed updatedBed = updateRoomUseCase.updateBed(bedToUpdate);
+        log.info("Bed updated successfully: {}", updatedBed);
+
+        BedDto dto = mapper.toDto(updatedBed);
+        log.debug("Mapped Bed DTO to domain object: {}", dto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     private ResponseEntity<HttpResponse> response(HttpStatus status, String message) {

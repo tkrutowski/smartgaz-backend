@@ -42,8 +42,8 @@ class RoomService {
         return byId.get();
     }
 
-    public Room findByBed(Integer id) {
-        Optional<Room> byId = roomRepository.findByBedId(id);
+    public Room findByBed(Integer idBed) {
+        Optional<Room> byId = roomRepository.findByBedId(idBed);
         return byId.orElse(null);
     }
 
@@ -53,6 +53,29 @@ class RoomService {
 
     public void deleteRoom(Integer id) {
         roomRepository.delete(id);
+    }
+
+    public Bed updateBed(Bed bed) {
+        log.debug("Updating bed : {}", bed);
+        Room room = findById(bed.getId());
+        log.debug("Found room : {} for bed : {}", room, bed);
+        room.getBeds().stream()
+                .filter(b -> b.getId() == bed.getId())
+                .forEach(b -> {
+                    log.debug("Updating bed status for bed ID: {} from {} to {}", b.getId(), b.getBedStatus(), bed.getBedStatus());
+                    b.setBedStatus(bed.getBedStatus());
+                });
+
+        Room updatedRoom = roomRepository.save(room);
+        log.debug("Room with ID: {} updated successfully", updatedRoom.getId());
+
+        return updatedRoom.getBeds().stream()
+                .filter(bed1 -> bed1.getId() == bed.getId())
+                .findFirst()
+                .orElseGet(() -> {
+                    log.warn("Bed with ID: {} not found after update!", bed.getId());
+                    return null;
+                });
     }
 
     private void validate(Room room) {

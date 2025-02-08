@@ -50,6 +50,11 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
     }
 
     @Override
+    public Bed updateBed(Bed bed) {
+        return roomService.updateBed(bed);
+    }
+
+    @Override
     public void deleteRoom(Integer id) {
         roomService.deleteRoom(id);
     }
@@ -93,6 +98,7 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
         log.info("Active reservations: {}", activeReservations);
 
         for (Reservation reservation : activeReservations) {
+            log.info("Trying to set status TO_CLEAN on {} for reservation; {}", now, reservation);
             reservation.getBeds().stream().map(ReservationBed::getBed)
                     .peek(bed -> log.info("Trying to set status TO_CLEAN for: {}", bed))
                     .forEach(bed -> {
@@ -106,11 +112,8 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
                             });
                         }
                     });
-
-            log.info("Trying to set status TO_CLEAN on {} for reservation; {}", now, reservation);
-//            reservationService.updateReservation(reservation);
+            log.info("Set status TO_CLEAN on {} for reservation; {}", now, reservation);
         }
-
         log.info("Schedule SetStatusAfterRent ended on: {}", now);
     }
 
@@ -123,6 +126,7 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
         log.info("Active reservations: {}", activeReservations);
 
         for (Reservation reservation : activeReservations) {
+            log.info("Trying to set status OCCUPIED on {} for reservation; {}", now, reservation);
             reservation.getBeds().stream().map(ReservationBed::getBed)
                     .peek(bed -> log.info("Trying to set status OCCUPIED for: {}", bed))
                     .forEach(bed -> {
@@ -136,9 +140,7 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
                             });
                         }
                     });
-
-            log.info("Trying to set status OCCUPIED on {} for reservation; {}", now, reservation);
-//            reservationService.updateReservation(reservation);
+            log.info("Set status OCCUPIED on {} for reservation; {}", now, reservation);
         }
         log.info("Schedule SetStatusWhenRent ended on: {}", now);
     }
