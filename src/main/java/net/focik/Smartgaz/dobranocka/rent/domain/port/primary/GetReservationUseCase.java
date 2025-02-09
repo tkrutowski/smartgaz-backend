@@ -18,4 +18,5 @@ public interface GetReservationUseCase {
 
     List<Reservation> findAllByCustomer(Customer customer);
 
+    boolean checkBedAvailability(LocalDate start, LocalDate end, int bedId, int reservationId);
 }

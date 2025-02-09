@@ -1,7 +1,9 @@
 package net.focik.Smartgaz.dobranocka.rent.api.mapper;
 
 import lombok.RequiredArgsConstructor;
+import net.focik.Smartgaz.dobranocka.rent.api.dto.BedDto;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
+import net.focik.Smartgaz.dobranocka.rent.domain.Bed;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

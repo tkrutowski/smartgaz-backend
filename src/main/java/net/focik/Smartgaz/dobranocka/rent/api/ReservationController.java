@@ -52,7 +52,7 @@ public class ReservationController extends ExceptionHandling {
 
     @GetMapping("/search")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
-    ResponseEntity<List<RoomDto>> getAvailableBeds(@RequestParam LocalDate start, @RequestParam LocalDate end, @RequestParam int howManyBeds) {
+    ResponseEntity<List<RoomDto>> getAvailableBeds(@RequestParam LocalDate start, @RequestParam LocalDate end) {
         log.info("Request to get available beds.");
 
         List<Room> availableBeds = getReservationUseCase.findRoomsWithAvailableBeds(start, end);
@@ -68,6 +68,17 @@ public class ReservationController extends ExceptionHandling {
                 .map(roomMapper::toDto)
                 .peek(bedDto -> log.debug("Mapped found bed {}", bedDto))
                 .toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/checkbed")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
+    ResponseEntity<Boolean> checkBedAvailability(@RequestParam LocalDate start, @RequestParam LocalDate end, @RequestParam int bedId, @RequestParam int reservationId) {
+        log.info("Request to check bed availability for bedId {} and reservationId {}.", bedId, reservationId);
+
+        boolean result = getReservationUseCase.checkBedAvailability(start, end, bedId, reservationId);
+
+        log.info("Result of check bed availability for bedId {} and reservationId {} = {}.", bedId, reservationId, result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping()

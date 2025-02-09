@@ -74,4 +74,23 @@ class ReservationService {
     public List<Reservation> findAllActiveReservationsByStartDate(LocalDate now) {
         return reservationRepository.findActiveReservationsByStartDate(now);
     }
+
+    public boolean checkBedAvailability(LocalDate start, LocalDate end, int bedId, int reservationId) {
+        List<Reservation> reservationList = reservationRepository.findAll().stream()
+                .filter(reservation ->
+                        !(reservation.getEndDate().isBefore(start) || reservation.getStartDate().isAfter(end))
+                )
+                .toList();
+        List<Reservation> list = new ArrayList<>();
+        for (Reservation reservation : reservationList) {
+            long count = reservation.getBeds().stream()
+                    .map(ReservationBed::getBed)
+                    .filter(bed -> bed.getId() == bedId)
+                    .count();
+            if (count>0 && reservation.getId() != reservationId)list.add(reservation);
+        }
+
+        return list.isEmpty();
+
+    }
 }
