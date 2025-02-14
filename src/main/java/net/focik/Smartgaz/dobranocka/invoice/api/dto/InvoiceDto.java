@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 public class InvoiceDto {
     private int idInvoice;
-    private String invoiceNumber;
+    private String number;
     private PaymentMethod paymentMethod;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")
     private LocalDate sellDate;//data sprzedaży

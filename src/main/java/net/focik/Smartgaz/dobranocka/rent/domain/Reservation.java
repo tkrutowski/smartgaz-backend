@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 public class Reservation {
     private int id;
+    private String number;
     private Customer customer;
     private List<ReservationBed> beds;
     private LocalDate startDate;

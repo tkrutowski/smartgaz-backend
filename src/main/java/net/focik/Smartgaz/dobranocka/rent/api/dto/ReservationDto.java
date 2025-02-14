@@ -17,6 +17,7 @@ import java.util.List;
 @ToString
 public class ReservationDto {
     private int id;
+    private String number;
     private Customer customer;
     private List<ReservationBedDto> beds;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")

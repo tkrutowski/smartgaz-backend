@@ -21,6 +21,7 @@ public class ReservationDbDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String number;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerDbDto customer;
