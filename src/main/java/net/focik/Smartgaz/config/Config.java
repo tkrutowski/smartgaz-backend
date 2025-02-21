@@ -3,6 +3,10 @@ package net.focik.Smartgaz.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;
+import net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto.InvoiceDbDto;
+import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
+import net.focik.Smartgaz.dobranocka.rent.infrastructure.dto.ReservationDbDto;
 import net.focik.Smartgaz.userservice.domain.port.secondary.IAppUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +25,17 @@ class Config {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(InvoiceDbDto.class, Invoice.class)
+                .addMappings(mapper -> {
+                    mapper.skip(Invoice::setReservationIds);
+                });
+        modelMapper.typeMap(ReservationDbDto.class, Reservation.class)
+                .addMappings(mapper -> {
+                    mapper.skip(Reservation::setInvoiceId);
+                });
+
+        return modelMapper;
     }
 
     //
