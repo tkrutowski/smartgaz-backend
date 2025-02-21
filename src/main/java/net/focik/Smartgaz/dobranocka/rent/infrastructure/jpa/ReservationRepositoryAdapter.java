@@ -6,6 +6,7 @@ import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
 import net.focik.Smartgaz.dobranocka.rent.domain.port.secondary.ReservationRepository;
 import net.focik.Smartgaz.dobranocka.rent.infrastructure.dto.ReservationDbDto;
+import net.focik.Smartgaz.dobranocka.rent.infrastructure.mapper.JpaReservationMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
 
     private final ReservationDtoRepository reservationDtoRepository;
     private final ModelMapper mapper;
+    private final JpaReservationMapper reservationMapper;
 
     @Override
     public Reservation save(Reservation reservation) {
@@ -43,7 +45,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     @Override
     public List<Reservation> findAllByCustomer(Customer customer) {
         return reservationDtoRepository.findAllByCustomer_Id(customer.getId()).stream()
-                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .map(reservationMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
@@ -54,20 +56,21 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
 
     @Override
     public Optional<Reservation> findById(Integer id) {
-        return reservationDtoRepository.findById(id).map(reservation -> mapper.map(reservation, Reservation.class));
+        return reservationDtoRepository.findById(id)
+                .map(reservationMapper::toDomain);
     }
 
     @Override
     public List<Reservation> findAll() {
         return reservationDtoRepository.findAll().stream()
-                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .map(reservationMapper::toDomain)
                 .toList();
     }
 
     @Override
     public List<Reservation> findActiveReservationsByDate(LocalDate date) {
         return reservationDtoRepository.findAllByStartDateIsBeforeAndEndDateIsAfter(date, date).stream()
-                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .map(reservationMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
@@ -75,7 +78,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     @Transactional //needed for CRON
     public List<Reservation> findActiveReservationsByEndDate(LocalDate endDate) {
         return reservationDtoRepository.findAllByEndDate(endDate).stream()
-                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .map(reservationMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +86,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     @Transactional //needed for CRON
     public List<Reservation> findActiveReservationsByStartDate(LocalDate endDate) {
         return reservationDtoRepository.findAllByStartDate(endDate).stream()
-                .map(reservationDbDto -> mapper.map(reservationDbDto, Reservation.class))
+                .map(reservationMapper::toDomain)
                 .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package net.focik.Smartgaz.dobranocka.customer.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Transient;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Customer {
     private String info;
 
     @Transient
+    @JsonIgnore
     public String getAddress() {
         return String.format("%s, %s %s",getStreet(), getZip(), getCity());
     }

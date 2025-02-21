@@ -19,6 +19,7 @@ public class ReservationDto {
     private int id;
     private String number;
     private Customer customer;
+    private Integer invoiceId;
     private List<ReservationBedDto> beds;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Warsaw")
     private LocalDate startDate;

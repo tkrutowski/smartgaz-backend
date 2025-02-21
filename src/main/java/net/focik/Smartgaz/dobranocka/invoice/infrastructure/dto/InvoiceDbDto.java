@@ -1,8 +1,10 @@
 package net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import net.focik.Smartgaz.dobranocka.customer.infrastructure.dto.CustomerDbDto;
+import net.focik.Smartgaz.dobranocka.rent.infrastructure.dto.ReservationDbDto;
 import net.focik.Smartgaz.utils.share.PaymentMethod;
 import net.focik.Smartgaz.utils.share.PaymentStatus;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,7 +24,6 @@ public class InvoiceDbDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer idInvoice;
-    //    private Integer idCustomer;
     @ManyToOne
     @JoinColumn(name = "id_customer")
     private CustomerDbDto customer;
@@ -41,4 +42,8 @@ public class InvoiceDbDto {
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceItemDbDto> invoiceItems;
+//
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<ReservationDbDto> reservations;
 }

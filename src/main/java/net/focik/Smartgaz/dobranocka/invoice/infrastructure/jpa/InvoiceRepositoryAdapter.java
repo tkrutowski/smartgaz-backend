@@ -5,6 +5,7 @@ import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.Invoice;
 import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.secondary.InvoiceRepository;
 import net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto.InvoiceDbDto;
+import net.focik.Smartgaz.dobranocka.invoice.infrastructure.mapper.JpaInvoiceMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class InvoiceRepositoryAdapter implements InvoiceRepository {
     private final InvoiceDtoRepository invoiceDtoRepository;
     private final InvoiceItemDtoRepository invoiceItemDtoRepository;
     private final ModelMapper mapper;
+    private final JpaInvoiceMapper jpaInvoiceMapper;
 
     @Override
     public Invoice save(Invoice invoice) {
@@ -38,7 +40,7 @@ public class InvoiceRepositoryAdapter implements InvoiceRepository {
     @Override
     public List<Invoice> findAll() {
         return invoiceDtoRepository.findAll().stream()
-                .map(invoiceDbDto -> mapper.map(invoiceDbDto, Invoice.class))
+                .map(jpaInvoiceMapper::toDomain)
                 .collect(Collectors.toList());
     }
 

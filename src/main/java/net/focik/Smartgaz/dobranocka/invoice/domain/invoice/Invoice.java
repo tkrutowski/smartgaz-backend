@@ -29,6 +29,7 @@ public class Invoice {
     private String otherInfo;
     private List<InvoiceItem> invoiceItems;
     private Customer customer;
+    private List<Integer> reservationIds;
 
     @Transient
     public void changePaymentStatus(PaymentStatus newPaymentStatus) {

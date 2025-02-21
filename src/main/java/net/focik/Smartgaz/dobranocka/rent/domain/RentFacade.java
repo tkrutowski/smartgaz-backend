@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.focik.Smartgaz.dobranocka.customer.domain.Customer;
 import net.focik.Smartgaz.dobranocka.rent.domain.port.primary.*;
+import net.focik.Smartgaz.utils.exceptions.ObjectCanNotBeDeletedException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -76,6 +77,10 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
 
     @Override
     public void deleteReservation(Integer id) {
+        Reservation reservation = findByReservationId(id);
+        if (reservation.getInvoiceId() > 0){
+            throw new ObjectCanNotBeDeletedException("Istnieją faktury.");
+        }
         reservationService.deleteReservation(id);
     }
 
@@ -92,6 +97,26 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
     @Override
     public Reservation updateReservation(Reservation reservation) {
         return reservationService.updateReservation(reservation);
+    }
+
+    @Override
+    public void updateInvoiceInReservation(int invoiceId, List<Integer> reservationIds) {
+        log.info("Start updating invoice in reservations. InvoiceId: {}, ReservationIds: {}", invoiceId, reservationIds);
+
+        for (Integer reservationId : reservationIds) {
+            log.info("Processing reservationId: {}", reservationId);
+            Reservation reservation = reservationService.findById(reservationId);
+            if (reservation == null) {
+                log.warn("Reservation with id {} not found. Skipping...", reservationId);
+                continue;
+            }
+            log.info("Updating reservationId: {} with invoiceId: {}", reservationId, invoiceId);
+            reservation.setInvoiceId(invoiceId);
+
+            reservationService.updateReservation(reservation);
+            log.info("Successfully updated reservationId: {}", reservationId);
+        }
+        log.info("Finished updating invoice in reservations.");
     }
 
     @Scheduled(cron = "${scheduler.rent.after}")

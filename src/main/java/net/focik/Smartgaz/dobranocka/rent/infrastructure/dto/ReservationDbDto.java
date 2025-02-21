@@ -1,8 +1,10 @@
 package net.focik.Smartgaz.dobranocka.rent.infrastructure.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import net.focik.Smartgaz.dobranocka.customer.infrastructure.dto.CustomerDbDto;
+import net.focik.Smartgaz.dobranocka.invoice.infrastructure.dto.InvoiceDbDto;
 import net.focik.Smartgaz.dobranocka.rent.domain.ReservationStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,6 +27,12 @@ public class ReservationDbDto {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerDbDto customer;
+
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    @JsonBackReference
+    private InvoiceDbDto invoice;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
