@@ -57,7 +57,8 @@ class RoomService {
 
     public Bed updateBed(Bed bed) {
         log.debug("Updating bed : {}", bed);
-        Room room = findById(bed.getId());
+        Room room = roomRepository.findByBedId(bed.getId())
+                .orElseThrow(() -> new RoomNotFoundException("bedId", String.valueOf(bed.getId())));
         log.debug("Found room : {} for bed : {}", room, bed);
         room.getBeds().stream()
                 .filter(b -> b.getId() == bed.getId())
