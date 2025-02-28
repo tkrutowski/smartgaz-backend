@@ -38,6 +38,11 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
                 bed.setReservation(reservationDbDto);
             });
         }
+
+        if (reservationDbDto.getInvoice() != null && reservationDbDto.getInvoice().getIdInvoice() == 0) {
+            reservationDbDto.setInvoice(null);
+        }
+
         ReservationDbDto saved = reservationDtoRepository.save(reservationDbDto);
         return mapper.map(saved, Reservation.class);
     }

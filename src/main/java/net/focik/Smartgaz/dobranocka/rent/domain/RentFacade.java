@@ -78,7 +78,7 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
     @Override
     public void deleteReservation(Integer id) {
         Reservation reservation = findByReservationId(id);
-        if (reservation.getInvoiceId() > 0){
+        if (reservation.getInvoiceId() != null && reservation.getInvoiceId() > 0){
             throw new ObjectCanNotBeDeletedException("Istnieją faktury.");
         }
         reservationService.deleteReservation(id);

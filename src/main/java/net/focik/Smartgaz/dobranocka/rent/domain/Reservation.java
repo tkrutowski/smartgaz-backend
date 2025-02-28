@@ -17,7 +17,7 @@ public class Reservation {
     private int id;
     private String number;
     private Customer customer;
-    private int invoiceId;
+    private Integer invoiceId;
     private List<ReservationBed> beds;
     private LocalDate startDate;
     private LocalDate endDate;

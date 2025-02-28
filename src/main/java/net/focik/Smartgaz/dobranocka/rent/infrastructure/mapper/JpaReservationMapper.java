@@ -19,7 +19,7 @@ public class JpaReservationMapper {
         Reservation reservation = mapper.map(dto, Reservation.class);
         reservation.setInvoiceId(Optional.ofNullable(dto.getInvoice())
                 .map(InvoiceDbDto::getIdInvoice)
-                .orElse(0));
+                .orElse(null));
         return reservation;
     }
 }
