@@ -8,10 +8,11 @@ import net.focik.Smartgaz.userservice.api.dto.AuthenticationResponse;
 import net.focik.Smartgaz.userservice.api.dto.RefreshRequest;
 import net.focik.Smartgaz.userservice.domain.AppUser;
 import net.focik.Smartgaz.userservice.domain.JwtService;
-import net.focik.Smartgaz.userservice.domain.exceptions.UserAlreadyExistsException;
+import net.focik.Smartgaz.userservice.domain.exceptions.TokenExpiredException;
 import net.focik.Smartgaz.userservice.domain.port.primary.GetUserUseCase;
 import net.focik.Smartgaz.userservice.domain.port.secondary.IAppUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,16 @@ public class AuthenticationService {
     private final IAppUserRepository userRepository;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid username or password", e);
+        }
         AppUser loginUser = getUserUseCase.findUserByUsername(request.getUsername());
         var jwtToken = jwtService.generateToken(loginUser);
         var refreshToken = jwtService.generateRefreshToken(loginUser);
@@ -62,8 +67,8 @@ public class AuthenticationService {
                 }
             }
         } catch (ExpiredJwtException e) {
-            log.warn("Refresh token expired for user: {}", username);
-            throw new UserAlreadyExistsException.TokenExpiredException("REFRESH TOKEN EXPIRED");
+            log.warn("Refresh token expired for user: {}", e.getClaims().getSubject());
+            throw new TokenExpiredException("REFRESH TOKEN EXPIRED");
         }
         return null;
     }
