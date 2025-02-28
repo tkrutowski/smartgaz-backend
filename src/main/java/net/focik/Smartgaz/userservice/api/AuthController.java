@@ -31,7 +31,7 @@ public class AuthController {
         return ResponseEntity.ok(refreshedToken);
     }
 
-    @PostMapping("/test")
+    @GetMapping("/test")
     public ResponseEntity<String> test() {
         log.info("Test ping");
         return ResponseEntity.ok("OK");
