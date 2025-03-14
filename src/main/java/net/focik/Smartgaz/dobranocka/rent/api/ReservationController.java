@@ -6,6 +6,7 @@ import net.focik.Smartgaz.dobranocka.rent.api.dto.ReservationDto;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiReservationMapper;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiRoomMapper;
+import net.focik.Smartgaz.dobranocka.rent.domain.RentFacade;
 import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
 import net.focik.Smartgaz.dobranocka.rent.domain.ReservationStatus;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;
@@ -70,13 +71,29 @@ public class ReservationController extends ExceptionHandling {
                 .toList(), HttpStatus.OK);
     }
 
+    @GetMapping("/check-end")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
+    ResponseEntity<Boolean> isReservationEndDate(@RequestParam Integer bed, @RequestParam LocalDate date) {
+        log.info("Request to check endDate: {} for bed: {}.", date, bed);
+        boolean result = getReservationUseCase.isEndDateByBed(bed, date);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/check-start")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
+    ResponseEntity<Boolean> isReservationStartDate(@RequestParam Integer bed, @RequestParam LocalDate date) {
+        log.info("Request to check endDate: {} for bed: {}.", date, bed);
+
+        boolean result = getReservationUseCase.isStartDateByBed(bed, date);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/checkbed")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
     ResponseEntity<Boolean> checkBedAvailability(@RequestParam LocalDate start, @RequestParam LocalDate end, @RequestParam int bedId, @RequestParam int reservationId) {
         log.info("Request to check bed availability for bedId {} and reservationId {}.", bedId, reservationId);
-
         boolean result = getReservationUseCase.checkBedAvailability(start, end, bedId, reservationId);
-
         log.info("Result of check bed availability for bedId {} and reservationId {} = {}.", bedId, reservationId, result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

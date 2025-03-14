@@ -95,6 +95,16 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
     }
 
     @Override
+    public boolean isEndDateByBed(Integer bed, LocalDate date) {
+        return reservationService.isEndDateByBed(bed, date) ;
+    }
+
+    @Override
+    public boolean isStartDateByBed(Integer bed, LocalDate date) {
+        return reservationService.isStartDateByBed(bed, date) ;
+    }
+
+    @Override
     public Reservation updateReservation(Reservation reservation) {
         return reservationService.updateReservation(reservation);
     }
