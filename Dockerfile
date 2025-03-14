@@ -14,7 +14,7 @@ ENV SCHEDULER_RENT_AFTER="0 0 11 * * *"
 ENV SCHEDULER_RENT_START="0 0 15 * * *"
 
 WORKDIR /app
-COPY target/smartgaz-1.7.1.jar .
+COPY target/smartgaz-1.8.0.jar .
 COPY src/main/resources ./src/main/resources
 EXPOSE 8070
-CMD  java -jar smartgaz-1.7.1.jar
+CMD  java -jar smartgaz-1.8.0.jar
