@@ -105,17 +105,15 @@ class ReservationService {
      */
     public boolean checkBedAvailability(LocalDate start, LocalDate end, int bedId, int reservationId) {
         log.info("Checking availability for bedId: {}, reservationId: {}, start: {}, end: {}", bedId, reservationId, start, end);
-        List<Reservation> conflictingReservations = reservationRepository.findAll().stream()
-                .filter(reservation -> {
-                    boolean overlaps = !(reservation.getEndDate().isBefore(start) || reservation.getStartDate().isAfter(end) || reservation.getStartDate().isEqual(end));
-                    log.debug("Checking reservation {}: start={}, end={}, overlaps={}",
-                            reservation.getId(), reservation.getStartDate(), reservation.getEndDate(), overlaps);
-                    return overlaps;
-                })
-                .toList();
-
+        List<Reservation> conflictingReservations = new ArrayList<>();
+        for (Reservation reservation : reservationRepository.findAll()) {
+            boolean overlaps = !((reservation.getEndDate().isBefore(start) || reservation.getEndDate().isEqual(start))
+                    || (reservation.getStartDate().isAfter(end) || reservation.getStartDate().isEqual(end)));
+            if (overlaps) {
+                conflictingReservations.add(reservation);
+            }
+        }
         boolean available = true;
-
         for (Reservation reservation : conflictingReservations) {
             long count = reservation.getBeds().stream()
                     .map(ReservationBed::getBed)
