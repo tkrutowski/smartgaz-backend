@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -73,18 +75,26 @@ public class ReservationController extends ExceptionHandling {
 
     @GetMapping("/check-end")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
-    ResponseEntity<Boolean> isReservationEndDate(@RequestParam Integer bed, @RequestParam LocalDate date) {
-        log.info("Request to check endDate: {} for bed: {}.", date, bed);
-        boolean result = getReservationUseCase.isEndDateByBed(bed, date);
+    ResponseEntity<Map<Integer, Boolean>> isReservationEndDate(@RequestParam List<Integer> beds, @RequestParam LocalDate date) {
+        log.info("Request to check endDate: {} for beds: {}.", date, beds);
+        Map<Integer, Boolean> result = beds.stream()
+                .collect(Collectors.toMap(
+                        bedId -> bedId,
+                        bedId -> getReservationUseCase.isEndDateByBed(bedId, date)
+                ));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/check-start")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
-    ResponseEntity<Boolean> isReservationStartDate(@RequestParam Integer bed, @RequestParam LocalDate date) {
-        log.info("Request to check endDate: {} for bed: {}.", date, bed);
+    ResponseEntity<Map<Integer, Boolean>> isReservationStartDate(@RequestParam List<Integer> beds, @RequestParam LocalDate date) {
+        log.info("Request to check endDate: {} for bed: {}.", date, beds);
 
-        boolean result = getReservationUseCase.isStartDateByBed(bed, date);
+        Map<Integer, Boolean> result = beds.stream()
+                .collect(Collectors.toMap(
+                        bedId -> bedId,
+                        bedId -> getReservationUseCase.isEndDateByBed(bedId, date)
+                ));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
