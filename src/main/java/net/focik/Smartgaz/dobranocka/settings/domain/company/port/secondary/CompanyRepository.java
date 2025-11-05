@@ -11,4 +11,6 @@ public interface CompanyRepository {
     Company save(Company customer);
 
     Optional<Company> get();
+
+    Optional<Company> findById(String companyName);
 }

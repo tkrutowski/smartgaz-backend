@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @Slf4j
-@Repository
+@Repository("fileCompanyRepository")
 @RequiredArgsConstructor
 public class CompanyRepositoryAdapter implements CompanyRepository {
 
@@ -45,5 +45,11 @@ public class CompanyRepositoryAdapter implements CompanyRepository {
             log.error(e.getMessage());
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<Company> findById(String companyName) {
+        if (companyName == null) return get();
+        return Optional.empty();
     }
 }

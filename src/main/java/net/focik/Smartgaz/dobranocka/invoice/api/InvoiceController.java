@@ -61,35 +61,18 @@ public class InvoiceController extends ExceptionHandling {
 
     @GetMapping("/pdf/{id}")
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_INVOICE_READ_ALL','DOBRANOCKA_INVOICE_READ') or hasRole('ROLE_ADMIN')")
-    ResponseEntity<?> getPdfById(@PathVariable int id) {
+    ResponseEntity<String> getPdfById(@PathVariable int id) {
         log.info("Request to generate PDF for invoice with id: {}", id);
-        Invoice invoice = getInvoiceUseCase.findById(id);
 
-        if (invoice == null) {
+        String url = printInvoiceUseCase.sendInvoiceToS3(id);
+
+        if (url == null) {
             log.warn("Invoice with id {} not found", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        log.info("Invoice with id {} found, proceeding to generate PDF", id);
-        String fileName = printInvoiceUseCase.printInvoice(invoice);
-        Resource resource;
-        try {
-            assert fileName != null;
-            Path path = Path.of(fileName);
-            resource = new UrlResource(path.toUri());
-            log.info("PDF generated successfully for invoice with id: {} at location: {}", id, fileName);
-        } catch (IOException e) {
-            log.error("Error occurred while generating PDF for invoice with id {}: {}", id, e.getMessage());
-            return response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
-                .body(resource);
+        log.info("Generated pdf for Invoice with id {}, URL: {}", id, url);
+        return new ResponseEntity<>(url, OK);
     }
 
     @GetMapping("/number/{year}")

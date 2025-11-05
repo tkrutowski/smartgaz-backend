@@ -7,9 +7,11 @@ import net.focik.Smartgaz.dobranocka.invoice.domain.invoice.port.primary.*;
 import net.focik.Smartgaz.dobranocka.rent.domain.RentFacade;
 import net.focik.Smartgaz.dobranocka.settings.domain.CompanyFacade;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.Company;
+import net.focik.Smartgaz.utils.FileHelperS3;
 import net.focik.Smartgaz.utils.share.PaymentStatus;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +22,7 @@ public class InvoiceFacade implements UpdateInvoiceUseCase, DeleteInvoiceUseCase
     private final InvoiceService invoiceService;
     private final CompanyFacade companyFacade;
     private final RentFacade rentFacade;
+    private final FileHelperS3 fileHelperS3;
 
     @Transactional
     public Invoice addInvoice(Invoice invoice) {
@@ -66,10 +69,28 @@ public class InvoiceFacade implements UpdateInvoiceUseCase, DeleteInvoiceUseCase
         invoiceService.deleteInvoice(idInvoice);
     }
 
+    /**
+     * This method creates a PDF representation of the invoice using the provided invoice data and company information.
+     * @param invoice The invoice object containing all the details for the invoice.
+     * @return A String representing the path or identifier of the created PDF file.
+     */
     @Override
-    public String printInvoice(Invoice invoice) {
+    public String createInvoicePdf(Invoice invoice) {
         Company company = companyFacade.get();
         return InvoicePdf.createPdf(invoice, company);
+    }
+
+    @Override
+    public String sendInvoiceToS3(int idInvoice) {
+        Invoice invoice = findById(idInvoice);
+        String filePath = createInvoicePdf(invoice);
+        if (filePath == null) {
+            return null;
+        }
+        File file = new File(filePath);
+        String s3Url = fileHelperS3.saveInBucket(file);
+        file.delete();
+        return s3Url;
     }
 
 }
