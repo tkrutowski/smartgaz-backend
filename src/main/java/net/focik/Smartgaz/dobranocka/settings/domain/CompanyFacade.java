@@ -1,19 +1,22 @@
 package net.focik.Smartgaz.dobranocka.settings.domain;
 
-import lombok.AllArgsConstructor;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.Company;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.port.primary.GetCompanyUseCase;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.port.primary.UpdateCompanyUseCase;
 import net.focik.Smartgaz.dobranocka.settings.domain.company.port.secondary.CompanyRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
 public class CompanyFacade implements GetCompanyUseCase, UpdateCompanyUseCase {
 
     private final CompanyRepository companyRepository;
+
+    public CompanyFacade(@Qualifier("jpaCompanyRepository") CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     @Override
     public Company get() {
