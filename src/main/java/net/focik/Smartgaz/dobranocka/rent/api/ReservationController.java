@@ -6,7 +6,6 @@ import net.focik.Smartgaz.dobranocka.rent.api.dto.ReservationDto;
 import net.focik.Smartgaz.dobranocka.rent.api.dto.RoomDto;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiReservationMapper;
 import net.focik.Smartgaz.dobranocka.rent.api.mapper.ApiRoomMapper;
-import net.focik.Smartgaz.dobranocka.rent.domain.RentFacade;
 import net.focik.Smartgaz.dobranocka.rent.domain.Reservation;
 import net.focik.Smartgaz.dobranocka.rent.domain.ReservationStatus;
 import net.focik.Smartgaz.dobranocka.rent.domain.Room;

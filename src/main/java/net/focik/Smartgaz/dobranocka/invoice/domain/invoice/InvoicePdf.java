@@ -12,6 +12,7 @@ import net.focik.Smartgaz.dobranocka.settings.domain.company.Company;
 import net.focik.Smartgaz.utils.MoneyUtils;
 import org.javamoney.moneta.Money;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -31,12 +32,17 @@ public class InvoicePdf {
     public InvoicePdf() {
     }
 
+    /**
+     * Creates a PDF document for the given invoice and company.
+     * @return The filename of the created PDF document, or null if an error occurred.
+     */
     public static String createPdf(Invoice invoice, Company company) {
         log.debug("Trying to create pdf file for invoice {}", invoice);
         Document document = new Document();
-        final String filename = "faktura.pdf";
+        File tempFile = null;
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(filename));
+            tempFile = File.createTempFile("invoice-" + invoice.getInvoiceNumber().replace('/', '_') + "-", ".pdf");
+            PdfWriter.getInstance(document, new FileOutputStream(tempFile));
             document.open();
 
             document.add(createNumber(invoice));
@@ -64,12 +70,15 @@ public class InvoicePdf {
 
             document.close();
             log.debug("Created pdf file for invoice {}", invoice);
+            return tempFile.getAbsolutePath();
 
         } catch (IOException | com.itextpdf.text.DocumentException e) {
             log.error("Error creating pdf", e);
+            if (tempFile != null) {
+                tempFile.delete();
+            }
             return null;
         }
-        return filename;
     }
 
     private static PdfPTable createNumber(Invoice invoice) {
