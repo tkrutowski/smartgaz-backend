@@ -21,7 +21,7 @@ import java.util.Optional;
 public class CompanyRepositoryAdapter implements CompanyRepository {
 
     private final ObjectMapper mapper;
-    @Value("${settings.file.path}")
+    @Value("${smartgaz.directory}")
     private String logDirectory;
 
     private final String fileName = "dobranocka.json";

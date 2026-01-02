@@ -47,4 +47,10 @@
         <appender-ref ref="FILE"/>
         <appender-ref ref="ASYNC_S3"/>
     </root>
+
+<!--    1. Logi trafiają do ASYNC_S3 (kolejka)-->
+<!--    2. S3LogAppender pobiera je JEDEN PO JEDNYM z ASYNC_S3-->
+<!--    3. Każdy log dodaje do swojego bufora (logBuffer)-->
+<!--    4. Jak buffer ma 100 logów → wysyła do S3-->
+<!--    5. Timer co 300s → sprawdza buffer i wysyła co tam jest (nawet jeśli < 100)-->
 </configuration>
