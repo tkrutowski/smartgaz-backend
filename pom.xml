@@ -10,7 +10,7 @@
     </parent>
     <groupId>net.focik</groupId>
     <artifactId>smartgaz</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.2</version>
     <name>Smartgaz</name>
     <description>App to manage rooms</description>
     <properties>
@@ -100,6 +100,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.32</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- to save logs in S3    -->
+        <dependency>
+            <groupId>io.github.acm19</groupId>
+            <artifactId>aws-request-signing-apache-interceptor</artifactId>
+            <version>2.1.1</version>
         </dependency>
     </dependencies>
 
