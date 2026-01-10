@@ -18,13 +18,15 @@ import java.util.stream.Collectors;
 public class InvoiceRepositoryAdapter implements InvoiceRepository {
 
     private final InvoiceDtoRepository invoiceDtoRepository;
-    private final InvoiceItemDtoRepository invoiceItemDtoRepository;
     private final ModelMapper mapper;
     private final JpaInvoiceMapper jpaInvoiceMapper;
 
     @Override
     public Invoice save(Invoice invoice) {
         InvoiceDbDto dbDto = mapper.map(invoice, InvoiceDbDto.class);
+        if (dbDto.getIdInvoice() == 0){
+            dbDto.setIdInvoice(null);
+        }
         if (dbDto.getInvoiceItems() != null) {
             dbDto.getInvoiceItems().forEach(invoiceItemDto -> invoiceItemDto.setInvoice(dbDto));
         }
