@@ -28,7 +28,12 @@ public class InvoiceRepositoryAdapter implements InvoiceRepository {
             dbDto.setIdInvoice(null);
         }
         if (dbDto.getInvoiceItems() != null) {
-            dbDto.getInvoiceItems().forEach(invoiceItemDto -> invoiceItemDto.setInvoice(dbDto));
+            dbDto.getInvoiceItems().forEach(invoiceItemDto -> {
+                invoiceItemDto.setInvoice(dbDto);
+                if (invoiceItemDto.getId() == 0){
+                    invoiceItemDto.setId(null);
+                }
+            });
         }
         InvoiceDbDto saved = invoiceDtoRepository.save(dbDto);
         return mapper.map(saved, Invoice.class);
