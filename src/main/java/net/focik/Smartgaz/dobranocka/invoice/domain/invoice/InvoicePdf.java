@@ -197,7 +197,7 @@ public class InvoicePdf {
         //tel
         Phrase phone = new Phrase();
         Chunk phone1 = new Chunk("Telefon: ", FONT_10);
-        Chunk phone2 = new Chunk(String.format("%s, %s", company.getPhone1(), company.getPhone2()), FONT_10_BOLD);
+        Chunk phone2 = new Chunk(String.format("%s %s", company.getPhone1(), company.getPhone2() == null ? "" : company.getPhone2()), FONT_10_BOLD);
         phone.add(phone1);
         phone.add(phone2);
         phone.add(Chunk.NEWLINE);
