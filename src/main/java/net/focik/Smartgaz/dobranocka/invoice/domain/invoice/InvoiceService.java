@@ -88,6 +88,7 @@ class InvoiceService {
         return invoiceRepository.save(invoice);
     }
 
+    @Transactional
     public void deleteInvoice(Integer idInvoice) {
         log.debug("Trying to delete invoice with id {}", idInvoice);
         invoiceRepository.deleteInvoice(idInvoice);
