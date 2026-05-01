@@ -77,6 +77,10 @@ class ReservationService {
                 .filter(reservation -> reservation.getReservationStatus().equals(status))
                 .toList();
     }
+    
+    public List<Reservation> findByDateBetween(LocalDate dateFrom, LocalDate dateTo) {
+        return reservationRepository.findByDateBetween(dateFrom, dateTo);
+    }
 
     public Reservation updateReservation(Reservation reservation) {
         findById(reservation.getId());

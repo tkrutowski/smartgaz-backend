@@ -127,6 +127,26 @@ public class ReservationController extends ExceptionHandling {
                 .toList(), HttpStatus.OK);
     }
 
+    @GetMapping("/range")
+    @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_READ_ALL','DOBRANOCKA_RESERVATION_READ') or hasRole('ROLE_ADMIN')")
+    ResponseEntity<List<ReservationDto>> getReservationByDate(@RequestParam LocalDate dateFrom, @RequestParam LocalDate dateTo) {
+        log.info("Request to get reservation by date from: {} to: {}.", dateFrom, dateTo);
+
+        List<Reservation> reservationList = getReservationUseCase.findByDateBetween(dateFrom, dateTo);
+
+        if (reservationList.isEmpty()) {
+            log.warn("No reservations found between {} and {}.", dateFrom, dateTo);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        log.info("Found {} reservations.", reservationList.size());
+        return new ResponseEntity<>(reservationList.stream()
+                .peek(reservation -> log.debug("Found reservation {}", reservation))
+                .map(mapper::toDto)
+                .peek(reservationDto -> log.debug("Mapped found reservation {}", reservationDto))
+                .toList(), HttpStatus.OK);
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DOBRANOCKA_RESERVATION_WRITE_ALL','DOBRANOCKA_RESERVATION_WRITE') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<ReservationDto> addReservation(@RequestBody ReservationDto reservationDto) {

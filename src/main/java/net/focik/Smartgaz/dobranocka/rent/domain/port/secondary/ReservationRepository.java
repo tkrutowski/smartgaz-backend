@@ -26,4 +26,6 @@ public interface ReservationRepository {
     List<Reservation> findActiveReservationsByEndDate(LocalDate endDate);
 
     List<Reservation> findActiveReservationsByStartDate(LocalDate startDate);
+
+    List<Reservation> findByDateBetween(LocalDate dateFrom, LocalDate dateTo);
 }

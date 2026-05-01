@@ -90,6 +90,11 @@ public class RentFacade implements AddRoomUseCase, GetRoomUseCase, UpdateRoomUse
     }
 
     @Override
+    public List<Reservation> findByDateBetween(LocalDate dateFrom, LocalDate dateTo) {
+        return reservationService.findByDateBetween(dateFrom, dateTo);
+    }
+
+    @Override
     public boolean checkBedAvailability(LocalDate start, LocalDate end, int bedId, int reservationId) {
         return reservationService.checkBedAvailability(start, end, bedId, reservationId);
     }

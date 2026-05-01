@@ -94,4 +94,11 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
                 .map(reservationMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Reservation> findByDateBetween(LocalDate dateFrom, LocalDate dateTo) {
+        return reservationDtoRepository.findByDateBetween(dateFrom, dateTo).stream()
+                .map(reservationMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }
